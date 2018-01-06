@@ -2,6 +2,9 @@ const express = require('express');
 const hbs = require('hbs');
 const fs = require('fs');
 
+//get port from env variable set by heroku, runs locally on port 5000
+const port = process.env.PORT || 5000;
+
 var app = express();
 
 hbs.registerPartials(__dirname + '/views/partials');
@@ -10,7 +13,7 @@ hbs.registerHelper('getCurrentYear', () => new Date().getFullYear());
 
 hbs.registerHelper('screamIt', (text) => text.toUpperCase());
 
-
+//set the view engine to handlebars
 app.set('view engine', 'hbs');
 
 //use middleware
@@ -53,6 +56,6 @@ app.get('/bad', (req, res) => {
     });
 });
 
+
 //second arg is callback for server started
-const port = 5000;
 app.listen(port, () => console.log(`Server started on port ${port}`));
