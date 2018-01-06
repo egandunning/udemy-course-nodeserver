@@ -1,6 +1,7 @@
 const express = require('express');
 const hbs = require('hbs');
 const fs = require('fs');
+const EOL = require('os').EOL;
 
 //get port from env variable set by heroku, runs locally on port 5000
 const port = process.env.PORT || 5000;
@@ -27,8 +28,10 @@ app.use((req, res, next) => {
     var now = new Date().toString();
     var log = `${now}: ${req.method} ${req.url}`
     console.log(log);
-    fs.appendFile('server.log', log + '\n', (err) => {
-        res.render('maintenance');
+    fs.appendFile('server.log', log + EOL, (err) => {
+        if(err) {
+            console.log('Logging error');
+        }
     });
     next();
 });
@@ -47,6 +50,12 @@ app.get('/', (req, res) => {
 app.get('/about', (req, res) => {
     res.render('about.hbs', {
         pageTitle: 'About Page'
+    });
+});
+
+app.get('/projects', (req, res) => {
+    res.render('projects.hbs', {
+        pageTitle: 'Projects'
     });
 });
 
